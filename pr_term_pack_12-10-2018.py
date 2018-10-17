@@ -723,7 +723,7 @@ def convert_sql_txt(cntr, arr):
         for item in hist_out_report:   f.writelines(item + '\n')
         f.close()
         #
-        path_file = str(dtt.year) + '-' + str_month + '-' + str_day + '_archiv' + '.txt'
+        path_file = str(dtt.year) + '-' + str_month + '-' + str_day + '_archiv_fut' + '.csv'
         cntr.log.wr_log_info('Archiv for ' + path_file)
         if os.path.exists(path_file):  os.remove(path_file)
         f = open(path_file,'w')
@@ -1038,21 +1038,6 @@ def menu_buttons(cntr, button):
             sg.Popup('Error !', rq[1])
         else:
             sg.Popup('OK !', cntr.term.str_in_file)
-
-        #rq  = cntr.db_FUT_data.get_table_db_with('hist_today')
-        #msg = rq[1]
-        #if rq[0] == 0:
-            #if len(msg) != 0:
-                #buf_msg  = 'first => ' + msg[0][1].split('|')[0]  + '\n'
-                #buf_msg += 'last  => ' + msg[-1][1].split('|')[0] + '\n'
-                #buf_msg += 'len   => ' + str(len(msg))
-                #sg.Popup('OK !',  buf_msg)
-            #else:
-                #buf_msg = 'len(hist)   => NULL'
-                #sg.Popup('NULL !',  buf_msg)
-        #else:
-            #cntr.log.wr_log_error('test SQL fut(hist) ' + msg)
-            #sg.Popup('Error !', msg)
     #
     if button == 'table HIST empty':
         cntr.log.wr_log_info('reset SQL HIST')
