@@ -191,10 +191,10 @@ class Class_LOGGER():
 
         # add the handlers to the logger
         self.logger.addHandler(self.handler)
-
+    #-------------------------------------------------------------------
     def wr_log_info(self, msg):
         self.logger.info(msg)
-
+    #-------------------------------------------------------------------
     def wr_log_error(self, msg):
         self.logger.error(msg)
 #=======================================================================
@@ -397,7 +397,7 @@ class Class_SQLite():
         self.table_db = []
         self.conn = ''
         self.cur = ''
-
+    #-------------------------------------------------------------------
     def check_db(self):
         '''  check FILE of DB SQLite    -----------------------------'''
         #    return os.stat: if FILE is and size != 0
@@ -412,7 +412,7 @@ class Class_SQLite():
             else:
                 r_check_db = [0, buf_st]
         return r_check_db
-
+    #-------------------------------------------------------------------
     def reset_table_db(self, name_tbl):
         ''' reset data in table DB  ---------------------------------'''
         r_reset_tbl = [0, '']
@@ -427,7 +427,7 @@ class Class_SQLite():
         except Exception as ex:
             r_reset_tbl = [1, str(ex)]
         return r_reset_tbl
-
+    #-------------------------------------------------------------------
     def rewrite_table_db(self, name_tbl, name_list):
         ''' rewrite data from table DB  -----------------------------'''
         r_rewrite_tbl = [0, '']
@@ -443,7 +443,7 @@ class Class_SQLite():
         except Exception as ex:
             r_rewrite_tbl = [1, str(ex)]
         return r_rewrite_tbl
-
+    #-------------------------------------------------------------------
     def rewrite_table_arc(self, name_tbl, name_list):
         ''' rewrite data from table ARCHIV_PACK & PACK_TODAY --------'''
         r_rewrt_tbl = [0, '']
@@ -459,7 +459,7 @@ class Class_SQLite():
         except Exception as ex:
             r_rewrt_tbl = [1, str(ex)]
         return r_rewrt_tbl
-
+    #-------------------------------------------------------------------
     def write_table_db(self, name_tbl, name_list):
         ''' write data string into table DB  ------------------------'''
         r_write_tbl = [0, '']
@@ -474,7 +474,7 @@ class Class_SQLite():
         except Exception as ex:
             r_write_tbl = [1, str(ex)]
         return r_write_tbl
-
+    #-------------------------------------------------------------------
     def get_table_db_with(self, name_tbl):
         ''' read one table DB  --------------------------------------'''
         r_get_table_db = []
