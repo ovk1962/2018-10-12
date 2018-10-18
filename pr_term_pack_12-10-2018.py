@@ -9,8 +9,8 @@ import sys
 import math
 import time
 import logging
-import sqlite3
 import smtplib
+import sqlite3
 from datetime import datetime
 from datetime import timezone
 import PySimpleGUI as sg
