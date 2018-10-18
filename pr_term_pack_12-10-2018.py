@@ -4,8 +4,8 @@
 #  pr_term_pack_12-10-2018.py
 #
 #=======================================================================
-import os
 import sys
+import os
 import time
 import math
 import logging
