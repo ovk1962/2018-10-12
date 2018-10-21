@@ -19,7 +19,7 @@ import PySimpleGUI as sg
 #=======================================================================
 menu_def = [['SQL', ['merge hist to archiv','convert sql txt','table HIST empty']],
             ['Calc', ['Calc archiv_pack', 'Calc pack_today'],],
-            ['Test', ['Test SQL',  ['SQL tbl DATA', 'SQL tbls TODAY', 'SQL tbls ARCHIV',],],],
+            ['Test', ['Test SQL',  ['SQL tbl DATA', 'SQL tbls TODAY & ARCHIV', ],],],
             ['Test WWW', 'File WWW'],
             ['Help', 'About...'],
             ['Exit', 'Exit']
@@ -45,7 +45,7 @@ def main():
     layout = [ [sg.Menu(menu_def, tearoff=False)],
                [sg_txt[0]],  [sg_txt[1]], [sg_txt[2]] ]  #, [sg_txt[2]], [sg_txt[3]], [sg_txt[4]], [sg_txt[5]]]
 
-    form = sg.FlexForm('TRM_1.12_AD_A7', return_keyboard_events=True, grab_anywhere=False, use_default_focus=False)
+    form = sg.FlexForm('TRM_1.21_AD_A7', return_keyboard_events=True, grab_anywhere=False, use_default_focus=False)
     form.Layout(layout)
 
     len_hist_fut = sec_num = sec_3num = sec_16num = sec_59num = 0
@@ -97,12 +97,12 @@ def main():
                                 for j, jtem in enumerate(cntr.term.str_in_file):
                                     buf = (jtem,)
                                     duf_list.append(buf)
-                                req = cntr.db_FUT_data.rewrite_table_db('data', duf_list)
-                                stroki[1] = buf_txt_status + ' rewrite_data_DB_____' + req[1] + '\n'
+                                req = cntr.db_FUT_data.rewrite_table('data', duf_list, val = '(?)')
+                                stroki[1] = buf_txt_status + ' rewrite_table_____' + req[1] + '\n'
                                 #
                                 # prepair string for table HIST_TODAY
                                 if req[0] != 0:
-                                    err_msg = 'rewrite_table_db(_data_) ' + rq[1]
+                                    err_msg = 'rewrite_table(_data_) ' + rq[1]
                                     cntr.log.wr_log_error(err_msg)
                                 req = cntr.term.prpr_str_hist()
                                 stroki[2] = buf_txt_status + ' prepare_str_hist____' + rq[1] + '\n'
@@ -146,8 +146,8 @@ def main():
                                     calc_today_packets(cntr)
                                     name_list = []
                                     name_list = prepair_today_pack(cntr)
-                                    # rewrite to SQL table  pack_today / cntr.db_FUT_data.rewrite_table_arc('pack_today', name_list))
-                                    rq  = cntr.db_FUT_data.rewrite_table_arc('pack_today', name_list)
+                                    # rewrite to SQL table  pack_today / cntr.db_FUT_data.rewrite_table('pack_today', name_list))
+                                    rq  = cntr.db_FUT_data.rewrite_table('pack_today', name_list)
                                     if rq[0] != 0:
                                         err_msg = 'rewrite_table_arc pack_today' + rq[1]
                                         cntr.log.wr_log_error(err_msg)
@@ -428,30 +428,14 @@ class Class_SQLite():
             r_reset_tbl = [1, str(ex)]
         return r_reset_tbl
     #-------------------------------------------------------------------
-    def rewrite_table_db(self, name_tbl, name_list):
-        ''' rewrite data from table DB  -----------------------------'''
-        r_rewrite_tbl = [0, '']
-        try:
-            self.conn = sqlite3.connect(self.path_db)
-            self.cur = self.conn.cursor()
-            self.cur.execute("DELETE FROM " + name_tbl)
-            self.cur.executemany("INSERT INTO " + name_tbl + " VALUES(?)", name_list)
-            self.conn.commit()
-            self.cur.close()
-            self.conn.close()
-            r_rewrite_tbl = [0, 'OK']
-        except Exception as ex:
-            r_rewrite_tbl = [1, str(ex)]
-        return r_rewrite_tbl
-    #-------------------------------------------------------------------
-    def rewrite_table_arc(self, name_tbl, name_list):
-        ''' rewrite data from table ARCHIV_PACK & PACK_TODAY --------'''
+    def rewrite_table(self, name_tbl, name_list, val = '(?, ?)'):
+        ''' rewrite data from table ARCHIV_PACK & PACK_TODAY & DATA ----'''
         r_rewrt_tbl = [0, '']
         try:
             self.conn = sqlite3.connect(self.path_db)
             self.cur = self.conn.cursor()
             self.cur.execute("DELETE FROM " + name_tbl)
-            self.cur.executemany("INSERT INTO " + name_tbl + " VALUES(?, ?)", name_list)
+            self.cur.executemany("INSERT INTO " + name_tbl + " VALUES" + val, name_list)
             self.conn.commit()
             self.cur.close()
             self.conn.close()
@@ -1039,33 +1023,9 @@ def menu_buttons(cntr, button):
         else:
             sg.Popup('OK !', cntr.term.str_in_file)
     #
-    if button == 'SQL tbls TODAY':
-        cntr.log.wr_log_info('SQL tbls TODAY')
-        rq  = cntr.db_FUT_data.get_table_db_with('hist_today')
-        if rq[0] != 0:
-            cntr.log.wr_log_error(rq[1])
-            sg.Popup('Error !', rq[1])
-        else:
-            msg = rq[1]
-            buf_msg  = 'hist_today => ' + '\n'
-            buf_msg += 'first => ' + msg[0][1].split('|')[0]  + '\n'
-            buf_msg += 'last  => ' + msg[-1][1].split('|')[0] + '\n'
-            buf_msg += 'len   => ' + str(len(msg)) + '\n' + '\n'
-            #sg.Popup('OK !',  buf_msg)
-        rq1  = cntr.db_FUT_data.get_table_db_with('pack_today')
-        if rq1[0] != 0:
-            cntr.log.wr_log_error(rq1[1])
-            sg.Popup('Error !', rq1[1])
-        else:
-            msg = rq1[1]
-            buf_msg += 'pack_today => ' + '\n'
-            buf_msg += 'first => ' + msg[0][1].split('|')[0]  + '\n'
-            buf_msg += 'last  => ' + msg[-1][1].split('|')[0] + '\n'
-            buf_msg += 'len   => ' + str(len(msg))
-            sg.Popup('OK !',  buf_msg)
-    #
-    if button == 'SQL tbls ARCHIV':
-        cntr.log.wr_log_info('SQL tbls ARCHIV')
+    if button == 'SQL tbls TODAY & ARCHIV':
+        cntr.log.wr_log_info('SQL tbls TODAY & ARCHIV')
+        #
         rq  = cntr.db_FUT_arc.get_table_db_with('archiv_fut')
         if rq[0] != 0:
             cntr.log.wr_log_error(rq[1])
@@ -1075,7 +1035,8 @@ def menu_buttons(cntr, button):
             buf_msg  = 'archiv_fut => ' + '\n'
             buf_msg += 'first => ' + msg[0][1].split('|')[0]  + '\n'
             buf_msg += 'last  => ' + msg[-1][1].split('|')[0] + '\n'
-            buf_msg += 'len   => ' + str(len(msg)) + '\n' + '\n'
+            buf_msg += 'len   => ' + str(len(msg)) + '\n'
+            buf_msg += '---------------------------------\n'
             #sg.Popup('OK !',  buf_msg)
         rq1  = cntr.db_FUT_arc.get_table_db_with('archiv_pack')
         if rq1[0] != 0:
@@ -1086,7 +1047,31 @@ def menu_buttons(cntr, button):
             buf_msg += 'archiv_pack => ' + '\n'
             buf_msg += 'first => ' + msg[0][1].split('|')[0]  + '\n'
             buf_msg += 'last  => ' + msg[-1][1].split('|')[0] + '\n'
-            buf_msg += 'len   => ' + str(len(msg))
+            buf_msg += 'len   => ' + str(len(msg)) + '\n'
+            buf_msg += '---------------------------------\n'
+            #sg.Popup('OK !',  buf_msg)
+        rq  = cntr.db_FUT_data.get_table_db_with('hist_today')
+        if rq[0] != 0:
+            cntr.log.wr_log_error(rq[1])
+            sg.Popup('Error !', rq[1])
+        else:
+            msg = rq[1]
+            buf_msg += 'hist_today => ' + '\n'
+            buf_msg += 'first => ' + msg[0][1].split('|')[0]  + '\n'
+            buf_msg += 'last  => ' + msg[-1][1].split('|')[0] + '\n'
+            buf_msg += 'len   => ' + str(len(msg)) + '\n'
+            buf_msg += '---------------------------------\n'
+            #sg.Popup('OK !',  buf_msg)
+        rq1  = cntr.db_FUT_data.get_table_db_with('pack_today')
+        if rq1[0] != 0:
+            cntr.log.wr_log_error(rq1[1])
+            sg.Popup('Error !', rq1[1])
+        else:
+            msg = rq1[1]
+            buf_msg += 'pack_today => ' + '\n'
+            buf_msg += 'first => ' + msg[0][1].split('|')[0]  + '\n'
+            buf_msg += 'last  => ' + msg[-1][1].split('|')[0] + '\n'
+            buf_msg += 'len   => ' + str(len(msg)) + '\n' + '\n'
             sg.Popup('OK !',  buf_msg)
     #
     if button == 'table HIST empty':
@@ -1158,8 +1143,8 @@ def menu_buttons(cntr, button):
                 calc_today_packets(cntr)
                 name_list = []
                 name_list = prepair_today_pack(cntr)
-                # rewrite to SQL table  pack_today / cntr.db_FUT_data.rewrite_table_arc('pack_today', name_list))
-                rq  = cntr.db_FUT_data.rewrite_table_arc('pack_today', name_list)
+                # rewrite to SQL table  pack_today / cntr.db_FUT_data.rewrite_table('pack_today', name_list))
+                rq  = cntr.db_FUT_data.rewrite_table('pack_today', name_list)
                 if rq[0] != 0:
                     err_msg = 'rewrite_table_arc pack_today' + rq[1]
                     cntr.log.wr_log_error(err_msg)
@@ -1195,7 +1180,7 @@ def menu_buttons(cntr, button):
             calc_archiv_packets(cntr)
             name_list = []
             name_list = prepair_archiv_pack(cntr)
-            rq  = cntr.db_FUT_arc.rewrite_table_arc('archiv_pack', name_list)
+            rq  = cntr.db_FUT_arc.rewrite_table('archiv_pack', name_list)
             if rq[0] != 0:
                 err_msg = 'rewrite_table_arc ' + rq[1]
                 cntr.log.wr_log_error(err_msg)
