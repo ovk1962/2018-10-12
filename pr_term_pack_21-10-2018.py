@@ -556,7 +556,7 @@ def init_cntr(cntr):
 
     #--- init koef -----------------------------------------
     cntr.mdl = []
-    init_koef_mdl(cntr)
+    get_cfg_packts(cntr)
 
     #--- read DB & init pack_archiv -------------------------
     if not os.path.isfile(cntr.db_path_FUT_arc):
@@ -601,7 +601,7 @@ def init_cntr(cntr):
         cntr.log.wr_log_error(err_msg)
         sg.Popup('Error !', err_msg)
         return [0, err_msg]
-    print(18*'>')
+    print(22*'>')
     for i_item, item in enumerate(rq[1]):
         if i_item % 1000 == 0:
             print('*', end="", flush=True)
@@ -633,7 +633,7 @@ def init_cntr(cntr):
     print('\ninit_cntr - OK')
     return [0, 'OK']
 #=======================================================================
-def init_koef_mdl(cntr):
+def get_cfg_packts(cntr):
     rq  = cntr.db_FUT_data.get_table_db_with('cfg_packts')
     if rq[0] != 0:
         sg.Popup('Error cfg_packts!',  rq[1])
