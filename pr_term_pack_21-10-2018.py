@@ -19,7 +19,7 @@ import PySimpleGUI as sg
 #=======================================================================
 menu_def = [['SQL', ['merge hist to archiv','convert sql txt','table HIST empty']],
             ['Calc', ['Calc archiv_pack', 'Calc pack_today'],],
-            ['Test', ['Test SQL',  ['SQL tbl DATA', 'SQL ARCHIV',],],],
+            ['Test', ['Test SQL',  ['SQL tbl DATA', 'SQL tbls TODAY', 'SQL tbls ARCHIV',],],],
             ['Test WWW', 'File WWW'],
             ['Help', 'About...'],
             ['Exit', 'Exit']
@@ -1039,6 +1039,56 @@ def menu_buttons(cntr, button):
         else:
             sg.Popup('OK !', cntr.term.str_in_file)
     #
+    if button == 'SQL tbls TODAY':
+        cntr.log.wr_log_info('SQL tbls TODAY')
+        rq  = cntr.db_FUT_data.get_table_db_with('hist_today')
+        if rq[0] != 0:
+            cntr.log.wr_log_error(rq[1])
+            sg.Popup('Error !', rq[1])
+        else:
+            msg = rq[1]
+            buf_msg  = 'hist_today => ' + '\n'
+            buf_msg += 'first => ' + msg[0][1].split('|')[0]  + '\n'
+            buf_msg += 'last  => ' + msg[-1][1].split('|')[0] + '\n'
+            buf_msg += 'len   => ' + str(len(msg)) + '\n' + '\n'
+            #sg.Popup('OK !',  buf_msg)
+        rq1  = cntr.db_FUT_data.get_table_db_with('pack_today')
+        if rq1[0] != 0:
+            cntr.log.wr_log_error(rq1[1])
+            sg.Popup('Error !', rq1[1])
+        else:
+            msg = rq1[1]
+            buf_msg += 'pack_today => ' + '\n'
+            buf_msg += 'first => ' + msg[0][1].split('|')[0]  + '\n'
+            buf_msg += 'last  => ' + msg[-1][1].split('|')[0] + '\n'
+            buf_msg += 'len   => ' + str(len(msg))
+            sg.Popup('OK !',  buf_msg)
+    #
+    if button == 'SQL tbls ARCHIV':
+        cntr.log.wr_log_info('SQL tbls ARCHIV')
+        rq  = cntr.db_FUT_arc.get_table_db_with('archiv_fut')
+        if rq[0] != 0:
+            cntr.log.wr_log_error(rq[1])
+            sg.Popup('Error !', rq[1])
+        else:
+            msg = rq[1]
+            buf_msg  = 'archiv_fut => ' + '\n'
+            buf_msg += 'first => ' + msg[0][1].split('|')[0]  + '\n'
+            buf_msg += 'last  => ' + msg[-1][1].split('|')[0] + '\n'
+            buf_msg += 'len   => ' + str(len(msg)) + '\n' + '\n'
+            #sg.Popup('OK !',  buf_msg)
+        rq1  = cntr.db_FUT_arc.get_table_db_with('archiv_pack')
+        if rq1[0] != 0:
+            cntr.log.wr_log_error(rq1[1])
+            sg.Popup('Error !', rq1[1])
+        else:
+            msg = rq1[1]
+            buf_msg += 'archiv_pack => ' + '\n'
+            buf_msg += 'first => ' + msg[0][1].split('|')[0]  + '\n'
+            buf_msg += 'last  => ' + msg[-1][1].split('|')[0] + '\n'
+            buf_msg += 'len   => ' + str(len(msg))
+            sg.Popup('OK !',  buf_msg)
+    #
     if button == 'table HIST empty':
         cntr.log.wr_log_info('reset SQL HIST')
         rq  = cntr.db_FUT_data.reset_table_db('hist_today')
@@ -1058,7 +1108,7 @@ def menu_buttons(cntr, button):
         else:
             cntr.log.wr_log_error(rq[1])
             sg.Popup('ERROR !', rq[1])
-
+    #
     if button == 'merge hist to archiv':
         cntr.log.wr_log_info('merge HIST into ARCHIV')
         # !!!
@@ -1082,7 +1132,7 @@ def menu_buttons(cntr, button):
         else:
             cntr.log.wr_log_error(rq[1])
             sg.Popup('ERROR !', rq[1])
-
+    #
     if button == 'Calc pack_today':
         cntr.log.wr_log_info('Calc pack_today')
         rq  = cntr.db_FUT_data.get_table_db_with('hist_today')
@@ -1125,7 +1175,7 @@ def menu_buttons(cntr, button):
         else:
             cntr.log.wr_log_error('test SQL fut(hist) ' + msg)
             sg.Popup('Error !', msg)
-
+    #
     if button == 'File WWW':
         rq  = cntr.db_FUT_data.get_table_db_with('data')
         if rq[0] == 0:
@@ -1139,7 +1189,7 @@ def menu_buttons(cntr, button):
         else:
             cntr.log.wr_log_error('test SQL fut(data) ' + msg)
             sg.Popup('Error !', msg)
-
+    #
     if button == 'Calc archiv_pack':
         if get_table_ARCHIV_FUT(cntr) == True:
             calc_archiv_packets(cntr)
@@ -1153,7 +1203,7 @@ def menu_buttons(cntr, button):
             else:
                 cntr.log.wr_log_info('rewrite_table_arc - OK')
                 sg.Popup('OK !', 'ok rewrite_table_arc ' + str(len(name_list)))
-
+    #
 #=======================================================================
 if __name__ == '__main__':
     import sys
