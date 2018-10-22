@@ -1032,11 +1032,15 @@ def menu_buttons(cntr, button):
             sg.Popup('Error !', rq[1])
         else:
             msg = rq[1]
-            buf_msg  = 'archiv_fut => ' + '\n'
-            buf_msg += 'first => ' + msg[0][1].split('|')[0]  + '\n'
-            buf_msg += 'last  => ' + msg[-1][1].split('|')[0] + '\n'
-            buf_msg += 'len   => ' + str(len(msg)) + '\n'
-            buf_msg += '---------------------------------\n'
+            if len(msg) != 0:
+                buf_msg  = 'archiv_fut => ' + '\n'
+                buf_msg += 'first => ' + msg[0][1].split('|')[0]  + '\n'
+                buf_msg += 'last  => ' + msg[-1][1].split('|')[0] + '\n'
+                buf_msg += 'len   => ' + str(len(msg)) + '\n'
+                buf_msg += '---------------------------------\n'
+            else:
+                buf_msg  = 'archiv_fut => NULL' + '\n'
+                buf_msg += '---------------------------------\n'
             #sg.Popup('OK !',  buf_msg)
         rq1  = cntr.db_FUT_arc.get_table_db_with('archiv_pack')
         if rq1[0] != 0:
@@ -1044,11 +1048,15 @@ def menu_buttons(cntr, button):
             sg.Popup('Error !', rq1[1])
         else:
             msg = rq1[1]
-            buf_msg += 'archiv_pack => ' + '\n'
-            buf_msg += 'first => ' + msg[0][1].split('|')[0]  + '\n'
-            buf_msg += 'last  => ' + msg[-1][1].split('|')[0] + '\n'
-            buf_msg += 'len   => ' + str(len(msg)) + '\n'
-            buf_msg += '---------------------------------\n'
+            if len(msg) != 0:
+                buf_msg += 'archiv_pack => ' + '\n'
+                buf_msg += 'first => ' + msg[0][1].split('|')[0]  + '\n'
+                buf_msg += 'last  => ' + msg[-1][1].split('|')[0] + '\n'
+                buf_msg += 'len   => ' + str(len(msg)) + '\n'
+                buf_msg += '---------------------------------\n'
+            else:
+                buf_msg += 'archiv_pack => NULL' + '\n'
+                buf_msg += '---------------------------------\n'
             #sg.Popup('OK !',  buf_msg)
         rq  = cntr.db_FUT_data.get_table_db_with('hist_today')
         if rq[0] != 0:
@@ -1056,11 +1064,15 @@ def menu_buttons(cntr, button):
             sg.Popup('Error !', rq[1])
         else:
             msg = rq[1]
-            buf_msg += 'hist_today => ' + '\n'
-            buf_msg += 'first => ' + msg[0][1].split('|')[0]  + '\n'
-            buf_msg += 'last  => ' + msg[-1][1].split('|')[0] + '\n'
-            buf_msg += 'len   => ' + str(len(msg)) + '\n'
-            buf_msg += '---------------------------------\n'
+            if len(msg) != 0:
+                buf_msg += 'hist_today => ' + '\n'
+                buf_msg += 'first => ' + msg[0][1].split('|')[0]  + '\n'
+                buf_msg += 'last  => ' + msg[-1][1].split('|')[0] + '\n'
+                buf_msg += 'len   => ' + str(len(msg)) + '\n'
+                buf_msg += '---------------------------------\n'
+            else:
+                buf_msg += 'hist_today => NULL' + '\n'
+                buf_msg += '---------------------------------\n'
             #sg.Popup('OK !',  buf_msg)
         rq1  = cntr.db_FUT_data.get_table_db_with('pack_today')
         if rq1[0] != 0:
@@ -1068,10 +1080,13 @@ def menu_buttons(cntr, button):
             sg.Popup('Error !', rq1[1])
         else:
             msg = rq1[1]
-            buf_msg += 'pack_today => ' + '\n'
-            buf_msg += 'first => ' + msg[0][1].split('|')[0]  + '\n'
-            buf_msg += 'last  => ' + msg[-1][1].split('|')[0] + '\n'
-            buf_msg += 'len   => ' + str(len(msg)) + '\n' + '\n'
+            if len(msg) != 0:
+                buf_msg += 'pack_today => ' + '\n'
+                buf_msg += 'first => ' + msg[0][1].split('|')[0]  + '\n'
+                buf_msg += 'last  => ' + msg[-1][1].split('|')[0] + '\n'
+                buf_msg += 'len   => ' + str(len(msg)) + '\n' + '\n'
+            else:
+                buf_msg += 'pack_today => NULL' + '\n'
             sg.Popup('OK !',  buf_msg)
     #
     if button == 'table HIST empty':
