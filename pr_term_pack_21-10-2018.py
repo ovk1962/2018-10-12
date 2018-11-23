@@ -1093,9 +1093,16 @@ def menu_buttons(cntr, button):
         cntr.log.wr_log_info('reset SQL HIST')
         rq  = cntr.db_FUT_data.reset_table_db('hist_today')
         if rq[0] == 0:
-            sg.Popup('OK !', 'reset SQL HIST')
+            sg.Popup('OK !', 'reset hist_today')
         else:
-            msg = 'reset SQL HIST ' + rq[1]
+            msg = 'reset hist_today ' + rq[1]
+            cntr.log.wr_log_error(msg)
+            sg.Popup('Error !', msg)
+        rq  = cntr.db_FUT_data.reset_table_db('pack_today')
+        if rq[0] == 0:
+            sg.Popup('OK !', 'reset pack_today')
+        else:
+            msg = 'reset pack_today ' + rq[1]
             cntr.log.wr_log_error(msg)
             sg.Popup('Error !', msg)
     #
