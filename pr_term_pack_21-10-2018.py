@@ -601,7 +601,7 @@ def init_cntr(cntr):
         cntr.log.wr_log_error(err_msg)
         sg.Popup('Error !', err_msg)
         return [0, err_msg]
-    print(22*'>')
+    print(32*'>')
     for i_item, item in enumerate(rq[1]):
         if i_item % 1000 == 0:
             print('*', end="", flush=True)
