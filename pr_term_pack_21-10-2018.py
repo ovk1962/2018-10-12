@@ -32,9 +32,10 @@ sg_txt = [  sg.T('-9999.99',  font='Helvetica 40'),
 
 file_path_DATA  = 'D:\\str_log_ad_A7.txt'
 file_path_WWW   = 'D:\\file_www_A7.txt'
-dir = os.path.abspath(os.curdir)
-db_path_FUT     = dir + '\\' + 'FUT_today.sqlite'
-db_path_FUT_arc = dir + '\\' + 'FUT_archiv.sqlite'
+dirr = os.path.abspath(os.curdir)
+db_path_FUT     = dirr + '\\' + 'FUT_today.sqlite'
+db_path_FUT_arc = dirr + '\\' + 'FUT_archiv.sqlite'
+name_trm = 'TRM_1.21_AD_A7'
 #=======================================================================
 def main():
     #-------------------------------------------------------------------
@@ -45,7 +46,7 @@ def main():
     layout = [ [sg.Menu(menu_def, tearoff=False)],
                [sg_txt[0]],  [sg_txt[1]], [sg_txt[2]] ]  #, [sg_txt[2]], [sg_txt[3]], [sg_txt[4]], [sg_txt[5]]]
 
-    form = sg.FlexForm('TRM_1.21_AD_A7', return_keyboard_events=True, grab_anywhere=False, use_default_focus=False)
+    form = sg.FlexForm(name_trm, return_keyboard_events=True, grab_anywhere=False, use_default_focus=False)
     form.Layout(layout)
 
     len_hist_fut = sec_num = sec_3num = sec_16num = sec_59num = 0
