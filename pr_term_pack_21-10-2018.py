@@ -715,7 +715,7 @@ def convert_sql_txt(cntr, arr):
         for item in hist_out_archiv:   f.writelines(str(int(item[0])) + ';' + item[1] + '\n')
         f.close()
         #
-        path_file = str(dtt.year) + '-' + str_month + '-' + str_day + '_hist' + '.txt'
+        path_file = str(dtt.year) + '-' + str_month + '-' + str_day + '_hist_ALFA' + '.txt'
         if os.path.exists(path_file):  os.remove(path_file)
         f = open(path_file,'w')
         for item in hist_out:          f.writelines(item + '\n')
