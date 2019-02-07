@@ -1004,8 +1004,9 @@ def prepair_www_file(cntr):
 #=======================================================================
 def rewrite_www_file(b_str):
     try:
-        with open(file_path_WWW, "w") as fh:
-            fh.write(b_str)
+        pass
+        #with open(file_path_WWW, "w") as fh:
+        #    fh.write(b_str)
     except Exception as ex:
         err_msg = 'rewrite_WWW_file / ' + ex
         cntr.log.wr_log_error(err_msg)
